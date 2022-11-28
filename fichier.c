@@ -23,7 +23,7 @@ void insert(ListeAssistant* liste,Collaborateur *collabo)
     if(liste==NULL)
         liste=InitialisationListeAssist();
 
-    if(liste->collabFirst==NULL)
+    else if(liste->collabFirst==NULL)
        { liste->collabFirst=collabo;
         liste->collabFirst->suivant=NULL;
        }
@@ -33,41 +33,45 @@ void insert(ListeAssistant* liste,Collaborateur *collabo)
         Collaborateur *temp=liste->collabFirst;
         liste->collabFirst=collabo;
         collabo->suivant=temp;
-        free (temp);
     }
 }
 void deleteElement(ListeAssistant *liste,Collaborateur *cible)
  {
-     if(liste==NULL)
-        printf("Gros y'a rien dedans\n");
+    if(liste==NULL)
+    {  printf("Gros y'a rien dedans\n");
         return;
+    }
 
-    if(liste->collabFirst==cible)
+    else if(liste->collabFirst==cible)
 
         liste->collabFirst=cible->suivant;
 
     else 
     { 
         Collaborateur* temp=liste->collabFirst;
-        while(temp->suivant!=cible)
+        while(temp->suivant!=cible && temp->suivant!=NULL)
         {
             temp=temp->suivant;
         }
         temp->suivant=cible->suivant;
-        free (temp);
+        free(cible);
 
     }
 
  }
  void deleteListeAssistant(ListeAssistant *listsuppr)
  {
-     Collaborateur* temp=listsuppr->collabFirst;
+     /*Collaborateur* temp=listsuppr->collabFirst;
      while (temp!=NULL)
      {
          deleteElement(listsuppr,temp);
          temp=listsuppr->collabFirst;
+       
      }
-     free(temp);
+    */
+    
+    
+     
  }
 
  void vidBuff()
@@ -165,6 +169,7 @@ void suppression_Dossier(Dossier *mydossier)
     printf("Suppression du dossier: %s",mydossier->nom_dossier);
 
     deleteListeAssistant(mydossier->collabo->assistant);
+    free(mydossier->collabo->assistant);
     free(mydossier->collabo);
-    free(mydossier);
+   
 }

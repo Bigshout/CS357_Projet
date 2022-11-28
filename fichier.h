@@ -2,6 +2,7 @@
 #define FICHIER_H
 #include <stdlib.h> 
 #include <stdio.h>
+#include<string.h>
 typedef struct ListeAssistant ListeAssistant;
 struct ListeAssistant;
 typedef enum Status Status;
@@ -18,6 +19,7 @@ struct Collaborateur{
     char fonction[128];
     ListeAssistant *assistant;
     Collaborateur *suivant;
+    
 };
 
 typedef struct Dossier Dossier;
