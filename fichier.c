@@ -24,7 +24,9 @@ void insert(ListeAssistant* liste,Collaborateur *collabo)
         liste=InitialisationListeAssist();
 
     if(liste->collabFirst==NULL)
-        liste->collabFirst=collabo;
+       { liste->collabFirst=collabo;
+        liste->collabFirst->suivant=NULL;
+       }
 
     else 
     {
@@ -57,6 +59,17 @@ void deleteElement(ListeAssistant *liste,Collaborateur *cible)
     }
 
  }
+ void deleteListeAssistant(ListeAssistant *listsuppr)
+ {
+     Collaborateur* temp=listsuppr->collabFirst;
+     while (temp!=NULL)
+     {
+         deleteElement(listsuppr,temp);
+         temp=listsuppr->collabFirst;
+     }
+     free(temp);
+ }
+
  void vidBuff()
 {
     char c=0;
@@ -83,24 +96,33 @@ Dossier* creation_dossier()
 
 
     printf("\tEntrer le nom du dossier\n");
-    scanf("%s",&(mydossier->nom_dossier));
+    scanf("%s",mydossier->nom_dossier);
 
- vidBuff();
+    vidBuff();
 
     printf("\tEntrer le jour de creation du dossier\n");
     scanf("%d",&(mydossier->open_date[0]));
+    
      vidBuff();
+
     printf("\tEntrer le mois de creation du dossier\n");
     scanf("%d",&(mydossier->open_date[1]));
+
      vidBuff();
+
     printf("\tEntrer l'annee de creation du dossier\n");
     scanf("%d",&(mydossier->open_date[2]));
+
     vidBuff();
+
     printf("\tEntrer le nom du responsable\n");
-    scanf("%s",&(mydossier->collabo->nom));
+    scanf("%s",mydossier->collabo->nom);
+
      vidBuff();
+
     printf("\tEntrer le prenom du responsable\n");
-    scanf("%s",&(mydossier->collabo->prenom));
+    scanf("%s",mydossier->collabo->prenom);
+
     vidBuff();
 
     do{
@@ -118,21 +140,31 @@ Dossier* creation_dossier()
         assist->assistant=NULL;
 
         printf("Quel est le nom de l'assistant:%d \n",i+1);
-        scanf("%s",&(assist->nom));
+        scanf("%s",assist->nom);
         vidBuff();
 
         printf("Quel est le prenom de l'assistant:%d \n",i+1);
-        scanf("%s",&(assist->prenom));
+        scanf("%s",assist->prenom);
         vidBuff();
         printf("Quel est la fonction de l'assistant:%d \n",i+1);
-        scanf("%s",&(assist->fonction));
+        scanf("%s",assist->fonction);
         vidBuff();
         insert(theAssist,assist);
 
 
     }
+
+
     
     return mydossier;
 
 }
 
+void suppression_Dossier(Dossier *mydossier)
+{
+    printf("Suppression du dossier: %s",mydossier->nom_dossier);
+
+    deleteListeAssistant(mydossier->collabo->assistant);
+    free(mydossier->collabo);
+    free(mydossier);
+}

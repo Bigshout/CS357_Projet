@@ -38,8 +38,7 @@ struct ListeAssistant{
 ListeAssistant* InitialisationListeAssist();
 void insert(ListeAssistant* liste,Collaborateur *collabo);
 void deleteElement(ListeAssistant *liste,Collaborateur *cible);
-
-
+void deleteListeAssistant(ListeAssistant *listsuppr);
 ///////////////////END OF ASSISTANT_GESTION//////////////////
 
 void vidBuff();
@@ -48,7 +47,7 @@ void vidBuff();
 
 ///////////////////begin of Creation_de dossier //////////////////
 Dossier* creation_dossier();
-
+void suppression_Dossier(Dossier *mydossier);
 
 
 #endif
