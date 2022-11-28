@@ -1,10 +1,5 @@
 #include"fichier.h"
-
-
-
-////////////////////////begin_of_Assitant_GESTION///////////////////
-
-
+#include <string.h>
 ListeAssistant* InitialisationListeAssist()
 {
 ListeAssistant* myliste=malloc(sizeof(ListeAssistant));
@@ -23,7 +18,7 @@ void insert(ListeAssistant* liste,Collaborateur *collabo)
     if(liste==NULL)
         liste=InitialisationListeAssist();
 
-    if(liste->collabFirst==NULL)
+    else if(liste->collabFirst==NULL)
        { liste->collabFirst=collabo;
         liste->collabFirst->suivant=NULL;
        }
@@ -33,41 +28,45 @@ void insert(ListeAssistant* liste,Collaborateur *collabo)
         Collaborateur *temp=liste->collabFirst;
         liste->collabFirst=collabo;
         collabo->suivant=temp;
-        free (temp);
     }
 }
 void deleteElement(ListeAssistant *liste,Collaborateur *cible)
  {
-     if(liste==NULL)
-        printf("Gros y'a rien dedans\n");
+    if(liste==NULL)
+    {  printf("Gros y'a rien dedans\n");
         return;
+    }
 
-    if(liste->collabFirst==cible)
+    else if(liste->collabFirst==cible)
 
         liste->collabFirst=cible->suivant;
 
     else 
     { 
         Collaborateur* temp=liste->collabFirst;
-        while(temp->suivant!=cible)
+        while(temp->suivant!=cible && temp->suivant!=NULL)
         {
             temp=temp->suivant;
         }
         temp->suivant=cible->suivant;
-        free (temp);
+        free(cible);
 
     }
 
  }
  void deleteListeAssistant(ListeAssistant *listsuppr)
  {
-     Collaborateur* temp=listsuppr->collabFirst;
+     /*Collaborateur* temp=listsuppr->collabFirst;
      while (temp!=NULL)
      {
          deleteElement(listsuppr,temp);
          temp=listsuppr->collabFirst;
+       
      }
-     free(temp);
+    */
+    
+    
+     
  }
 
  void vidBuff()
@@ -165,6 +164,65 @@ void suppression_Dossier(Dossier *mydossier)
     printf("Suppression du dossier: %s",mydossier->nom_dossier);
 
     deleteListeAssistant(mydossier->collabo->assistant);
+    free(mydossier->collabo->assistant);
     free(mydossier->collabo);
-    free(mydossier);
+   
+}
+
+///////////////////begin of Collaborateur_gestion //////////////////
+ void ajout_collaborateur(Collaborateur *collabo){
+    FILE *fichier =NULL;
+    Collaborateur *NouveauCollab=malloc(sizeof(*NouveauCollab));
+
+    fichier = fopen("Liste_collaborateurs", "a");
+
+    if( fichier == NULL )
+    {
+        printf( "impossible d'ouvrir le fichier\n" );
+    }
+    else
+    {
+        printf("Ajout d'un nouveau Collaborateur\n");
+        printf("Nom du nouveau Collaborateur\n");
+        scanf("%s", &NouveauCollab->nom);
+        fprintf(fichier, "%s\n", NouveauCollab->nom);
+
+        printf("Prenom du nouveau Collaborateur\n");
+        scanf("%s", &NouveauCollab->prenom);
+        fprintf(fichier, "%s\n", NouveauCollab->prenom);
+
+
+        printf("Fonction du nouveau Collaborateur\n");
+        scanf("%s", &NouveauCollab->fonction);
+        fprintf(fichier, "%s\n\n", NouveauCollab->fonction);
+    }    
+}
+void Charge_liste_collabo(Collaborateur *collabo, ListeAssistant *liste){
+    FILE *fichier = NULL;
+    
+    Collaborateur *cible=malloc(sizeof(*cible));
+    fichier = fopen("Liste_collaborateurs", "r");
+}
+
+void suppression_collaborateur(Collaborateur *collabo){
+    FILE *fichier = NULL;
+    Collaborateur *cible=malloc(sizeof(*cible));
+    char Nom_a_Supprimer[100];
+    fichier = fopen("Liste_collaborateurs", "r+");
+
+
+    if( fichier == NULL )
+    {
+        printf( "impossible d'ouvrir le fichier\n" );
+    }
+    else
+    {
+        
+        printf("Nom à Supprimer\n");
+        scanf("%s", Nom_a_Supprimer);
+        
+        
+        
+    }
+
 }

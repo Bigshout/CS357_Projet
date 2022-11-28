@@ -1,10 +1,12 @@
-#include "src/fichier.h"
-
+#include "fichier.h"
+#include <stdio.h>
+#include <stdlib.h>
 int main(void)
 {
     /////////////////////// Unit_Test of collaborateur,Status,Dossier,ListeAssistant,Creation_listassist/////
+Collaborateur *collabo= malloc(sizeof(*collabo));
 
-    Dossier *mine=creation_dossier();
+ajout_collaborateur(collabo);
     
 
 

@@ -13,7 +13,7 @@ enum Status{
 typedef struct Collaborateur Collaborateur;
 struct Collaborateur{
 
-     char nom[128];
+    char nom[128];
     char prenom[128];
     char fonction[128];
     ListeAssistant *assistant;
@@ -48,6 +48,8 @@ void vidBuff();
 ///////////////////begin of Creation_de dossier //////////////////
 Dossier* creation_dossier();
 void suppression_Dossier(Dossier *mydossier);
+void ajout_collaborateur(Collaborateur *collabo);
+void Charge_liste_collabo(Collaborateur *collabo, ListeAssistant *liste);
 
 
 #endif
