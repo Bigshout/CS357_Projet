@@ -300,6 +300,10 @@ void enregistrerListeDossier(ListeDoss *myliste)
 }
 ListeDoss* chargerListeDossier(Liste *listecollab)
 {
+	
+	printf("Cette fonction de chargement  ne marche pas bien\n");
+	
+	
 	ListeDoss* myliste=malloc(sizeof(ListeDoss));
 
 	if(!myliste)
@@ -363,16 +367,16 @@ ListeDoss* chargerListeDossier(Liste *listecollab)
 								
 							break;
 							case 4:
-								/*tmp->collabo=rechercheCollaborateur(listecollab,atoi(chaine));
+								tmp->collabo=rechercheCollaborateur(listecollab,atoi(chaine));
 								tmp->collabo->nbreDoss++;
-								dossierSuivi(tmp->collabo,tmp->nom_dossier);*/
+								dossierSuivi(tmp->collabo,tmp->nom_dossier);
 								
 							break;
 							case 5:
-								/*tmp->assistant=InitialisationListeAssist();
+								tmp->assistant=InitialisationListeAssist();
 								tmp->assistant->collabFirst=rechercheCollaborateur(listecollab,atoi(chaine));
 								tmp->assistant->collabFirst->nbreDoss++;
-								dossierSuivi(tmp->assistant->collabFirst,tmp->nom_dossier);*/
+								dossierSuivi(tmp->assistant->collabFirst,tmp->nom_dossier);
 							break;
 							case 6:
 								tmp->num_dossier=atoi(chaine);

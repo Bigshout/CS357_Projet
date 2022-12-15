@@ -155,7 +155,7 @@ Collaborateur* rechercheCollaborateur(Liste* liste,unsigned int matricule)
     { 
         Collaborateur* temp=liste->collabFirst;
 
-        while(temp->matricule!=matricule && temp!=NULL)
+        while(temp!=NULL && temp->matricule!=matricule)
         {
            
             temp=temp->suivant;
@@ -180,15 +180,17 @@ Collaborateur* rechercheCollaborateurNom(Liste* liste,char *nom)
     { 
         Collaborateur* temp=liste->collabFirst;
 
-        while(strncmp(temp->prenom,nom,strlen(nom)) && temp!=NULL)
+        while(temp!=NULL && strncmp(temp->prenom,nom,strlen(nom)))
         {
            
             temp=temp->suivant;
-        }
 
-          return temp;
+          
+        }
+       
         
     }
+    return 0;
   
 
 
@@ -412,7 +414,7 @@ void AfficherDossier(Dossier *mydossier)//validé
                     Statut : %d \n \
                     Date d'ouverture :%d / %d / %d\n \
                     Date de fermeture :%d / %d / %d\n\
-                     Binome Avocat/clerc: %s %s / %s %s\n\n"\
+                    Binome Avocat/clerc: %s %s / %s %s\n\n"\
                                                     ,mydossier->nom_dossier,mydossier->etat_dossier,
                                                     mydossier->open_date[0],mydossier->open_date[1],mydossier->open_date[2],
                                                     mydossier->closed_date[0],mydossier->closed_date[1],mydossier->closed_date[2],
@@ -519,7 +521,7 @@ void deleteElementDossier(ListeDoss *liste,Dossier *cible)//validé
 
     }
 
-Collaborateur* rechercheCollaborateurNom(Liste* liste,char *nom);//validé!
+
  }
  void deleteListeDossier(ListeDoss *listsuppr)
  {
@@ -550,7 +552,7 @@ Collaborateur* rechercheCollaborateurNom(Liste* liste,char *nom);//validé!
     { 
         Dossier* temp=liste->Dossier_first;
 
-        while(temp->num_dossier!=cible && temp!=NULL)
+        while(temp!=NULL && temp->num_dossier!=cible)
         {
            
             temp=temp->suivant;
@@ -574,7 +576,7 @@ Collaborateur* rechercheCollaborateurNom(Liste* liste,char *nom);//validé!
     { 
         Dossier* temp=liste->Dossier_first;
 
-        while(strcmp(temp->nom_dossier,cible) && temp!=NULL)
+        while(temp!=NULL && strcmp(temp->nom_dossier,cible) )
         {
            
             temp=temp->suivant;
