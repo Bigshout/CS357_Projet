@@ -53,6 +53,9 @@ void deleteElement(Liste *liste,Collaborateur *cible)
 
         return;
     }
+    else if(cible==NULL)
+
+            printf("ce collaborateur n'existe pas");
 
     else if(liste->collabFirst==cible)
 
@@ -74,9 +77,12 @@ void deleteElement(Liste *liste,Collaborateur *cible)
 
         temp->suivant=cible->suivant;
 
+      
         free(cible);
+        
 
     }
+    return;
 
  }
  void deleteListe(Liste *listsuppr)
@@ -180,14 +186,14 @@ Collaborateur* rechercheCollaborateurNom(Liste* liste,char *nom)
     { 
         Collaborateur* temp=liste->collabFirst;
 
-        while(temp!=NULL && strncmp(temp->prenom,nom,strlen(nom)))
+        while(temp!=NULL && strncmp(temp->nom,nom,strlen(nom)))
         {
            
             temp=temp->suivant;
 
           
         }
-       
+        return temp;
         
     }
     return 0;
@@ -344,19 +350,12 @@ Dossier* creation_dossier()
         printf("Quel est le nom de l'assistant\n");
         scanf("%s",assist->nom);
         vidBuff();
-
-        printf("Quel est le prenom de l'assistant \n");
-        scanf("%s",assist->prenom);
-        vidBuff();
-        printf("Quel est la fonction de l'assistant \n");
-        scanf("%s",assist->fonction);
-        vidBuff();
         insert(mydossier->assistant,assist);
 
 
     
 
-    afficherListe(mydossier->assistant);
+    AfficherDossier(mydossier);
 
 
     
@@ -464,7 +463,7 @@ void insertDossier(ListeDoss* liste,Dossier *newDossier)//validé
 {
     if(liste==NULL)
 
-        printf("la liste est vide");
+        printf("la liste n'est pasinitioaliséé\n");
 
     else if(liste->Dossier_first==NULL)
        { 
@@ -593,9 +592,10 @@ void deleteElementDossier(ListeDoss *liste,Dossier *cible)//validé
  void modifierDossier(Dossier* tomodify,Liste* liscollab)
  {
 
-    if(!tomodify)
+    if(!tomodify || !liscollab)
     {
         fprintf(stderr,"erreur lors de la modification du dossier");
+        return;
     }
 
 

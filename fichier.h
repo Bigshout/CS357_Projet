@@ -100,7 +100,7 @@ void afficherListeDossier(ListeDoss *myliste); //validé
 ///////////// gestion du menu de commande  ///////////////
 
 void Affichage_du_menu();
-void fonc1(ListeDoss *mydoss,Liste *coll);
+void fonc1(ListeDoss **mydoss,Liste **coll);
 void fonc2(ListeDoss* mylist);
 void fonc5(Liste *mylist);
 void fonc6(ListeDoss* mylist);
@@ -108,6 +108,7 @@ void fonc7(ListeDoss *mylist);
 void fonc8(ListeDoss* mylist,Liste* mine);
 void fonc9(Liste* mylist);
 void fonc10(Liste* mylist);
+void fonction14(Liste* mylist);
 
 
 
@@ -121,7 +122,7 @@ void deleteCollab(Liste *myliste,unsigned int matricule);//validé
 void enregistrerListeDossier(ListeDoss *myliste);//no implé
 ListeDoss* chargerListeDossier(Liste *listecollab);//no implé
 void ajouterDossier(ListeDoss *myliste,Liste *listecollab);
-void nomSauvegarder();//validé
+void nomSauvegarder(int *flag);//validé
 
 
 

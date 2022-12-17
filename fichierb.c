@@ -89,7 +89,7 @@ Liste* chargerListe()
 	}
 	else
 	{
-		FILE* myFichier=fopen(strcat(nomSaveFichierListe,".txt"),"r");
+		FILE* myFichier=fopen(nomSaveFichierListe,"r");
 		if(!myFichier)
 		{
 			fprintf(stderr,"Le fichier spécifié : %s n'existe pas \n",nomSaveFichierListe);
@@ -149,7 +149,7 @@ Liste* chargerListe()
 
 	}
 
-
+	afficherListe(myliste);
 	return myliste;
 }
 
@@ -180,10 +180,10 @@ void enregistrerListe(Liste *myliste)
 			fputc(47,myfichier);
 			fputc('\n',myfichier);
 
-			fprintf(myfichier,"-%s\n",tempo->nom);
-			fprintf(myfichier,"-%s\n,",tempo->prenom);
-			fprintf(myfichier,"-%s\n",tempo->fonction);
-			fprintf(myfichier,"-%d\n",tempo->matricule);
+			fprintf(myfichier,"%s\n",tempo->nom);
+			fprintf(myfichier,"%s\n",tempo->prenom);
+			fprintf(myfichier,"%s\n",tempo->fonction);
+			fprintf(myfichier,"%d\n",tempo->matricule);
 
 			fputc(47,myfichier);
 			fputc('\n',myfichier);
@@ -275,12 +275,12 @@ void enregistrerListeDossier(ListeDoss *myliste)
 
 
 			fprintf(myfichier,"%s\n",tempo->nom_dossier);
-			fprintf(myfichier,"%d %d %d\n,",tempo->open_date[0],tempo->open_date[1],tempo->open_date[2]);
-			fprintf(myfichier,"%d %d %d\n,",tempo->closed_date[0],tempo->closed_date[1],tempo->closed_date[2]);
+			fprintf(myfichier,"%d\n%d\n%d\n,",tempo->open_date[0],tempo->open_date[1],tempo->open_date[2]);
+			fprintf(myfichier,"%d\n%d\n%d\n,",tempo->closed_date[0],tempo->closed_date[1],tempo->closed_date[2]);
 			fprintf(myfichier,"%d\n",tempo->num_dossier);
 			fprintf(myfichier,"%d\n",tempo->etat_dossier);
-			fprintf(myfichier,"%u\n",tempo->collabo->matricule);
-			fprintf(myfichier,"%u\n",tempo->assistant->collabFirst->matricule);
+			fprintf(myfichier,"%d\n",tempo->collabo->matricule);
+			fprintf(myfichier,"%d\n",tempo->assistant->collabFirst->matricule);
 
 
 
@@ -301,10 +301,9 @@ void enregistrerListeDossier(ListeDoss *myliste)
 ListeDoss* chargerListeDossier(Liste *listecollab)
 {
 	
-	printf("Cette fonction de chargement  ne marche pas bien\n");
 	
 	
-	ListeDoss* myliste=malloc(sizeof(ListeDoss));
+	ListeDoss* myliste=InitialisationListeDossier();
 
 	if(!myliste)
 	{
@@ -338,48 +337,61 @@ ListeDoss* chargerListeDossier(Liste *listecollab)
 						{
 							case  0:
 								strcpy(tmp->nom_dossier,chaine);
+
+								
 							break;
 
 							case 1:
 								
-								tmp->open_date[0]=12;
+
+								tmp->open_date[0]=atoi(chaine);
+								
+								strcpy(chaine,"");
+								fgets(chaine,128,myFichier);
+								tmp->open_date[1]=atoi(chaine);
 								
 
-								tmp->open_date[0]=12;
-								
-
-								tmp->open_date[0]=2022;
+								strcpy(chaine,"");
+								fgets(chaine,128,myFichier);
+								tmp->open_date[2]=atoi(chaine);
 							break;
 
 							case 2:
-
-								tmp->closed_date[0]=0;
 								
 
-								tmp->closed_date[1]=0;
+								tmp->closed_date[0]=atoi(chaine);
+								
+								strcpy(chaine,"");
+								fgets(chaine,128,myFichier);
+								tmp->closed_date[1]=atoi(chaine);
 								
 
-								tmp->closed_date[2]=0;
+								strcpy(chaine,"");
+								fgets(chaine,128,myFichier);
+								tmp->closed_date[2]=atoi(chaine);
 							
 							break;
-							case 3:
+							case 4:
 								tmp->etat_dossier=atoi(chaine);
+
+								
 								
 							break;
-							case 4:
+							case 5:
 								tmp->collabo=rechercheCollaborateur(listecollab,atoi(chaine));
 								tmp->collabo->nbreDoss++;
 								dossierSuivi(tmp->collabo,tmp->nom_dossier);
 								
 							break;
-							case 5:
+							case 6:
 								tmp->assistant=InitialisationListeAssist();
 								tmp->assistant->collabFirst=rechercheCollaborateur(listecollab,atoi(chaine));
 								tmp->assistant->collabFirst->nbreDoss++;
 								dossierSuivi(tmp->assistant->collabFirst,tmp->nom_dossier);
 							break;
-							case 6:
+							case 3:
 								tmp->num_dossier=atoi(chaine);
+								
 								
 							break;
 
@@ -394,8 +406,8 @@ ListeDoss* chargerListeDossier(Liste *listecollab)
 						i++;
 					}
 					while(strcmp(chaine,"/\n"));
-                insertDossier(myliste,tmp);
-
+                		insertDossier(myliste,tmp);
+			
 				}
 			}
 			fclose(myFichier);
@@ -405,8 +417,9 @@ ListeDoss* chargerListeDossier(Liste *listecollab)
 
 
 	}
+	
 
-
+	
 	return myliste;
 
 
@@ -427,19 +440,26 @@ void ajouterDossier(ListeDoss *myliste,Liste* listecollab)
 
 	Dossier* nouveau=creation_dossier();
 	Collaborateur* collab=NULL;
+	Collaborateur* assist=NULL;
 	collab=rechercheCollaborateurNom(listecollab,nouveau->collabo->nom);
+	assist=rechercheCollaborateurNom(listecollab,nouveau->assistant->collabFirst->nom);
 
-
-	if(collab)
+	if(collab && assist)
 	{
 		insertDossier(myliste,nouveau);
+		nouveau->collabo=collab;
 		collab->nbreDoss++;
 		dossierSuivi(collab,nouveau->nom_dossier);
+		nouveau->assistant->collabFirst=assist;
+		assist->nbreDoss++;
+		dossierSuivi(assist,nouveau->nom_dossier);
 		enregistrerListeDossier(myliste);
 	}
 	else
-	{
+	{	free(nouveau->collabo);
+		free(nouveau->assistant);
 		free(nouveau);
+		printf("erreur lors de la creation du dossier\n");
 		printf("Le responsable n'existe dans la base de donnée\n");
 		
 	}
@@ -447,8 +467,10 @@ void ajouterDossier(ListeDoss *myliste,Liste* listecollab)
 	return;
 }
 
-void nomSauvegarder()
+void nomSauvegarder(int *flag)
 {
+     if(*flag==1)
+     {
 	printf("Entrer le nom du fichier de sauvegarde Liste Colaborateur\n");
 	fflush(stdin);
 	scanf("%s",nomSaveFichierListe);
@@ -458,4 +480,6 @@ void nomSauvegarder()
 	fflush(stdin);
 	scanf("%s",nomSaveFichierDoss);
 	fflush(stdin);
+	*flag=0;
+     }
 }

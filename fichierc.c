@@ -1,13 +1,16 @@
 #include "fichier.h"
 
 
-int choice=0;
+
+int flag=1;
 
 void Affichage_du_menu()
 {
 	int choix,quit=1;
   	ListeDoss* mylist_Dossier=InitialisationListeDossier();
 	Liste* mylisteCollab=InitialisationListeAssist();
+	char c;
+	
 
 	
 	do
@@ -19,6 +22,7 @@ void Affichage_du_menu()
 		printf("2:Afficher les informations d'un dossier\n");
 		printf("3:créer un dossier\n");
 		printf("4:créer un collaborateur\n");
+		printf("14:Afficher les informations sur un collaborateur\n");
 		printf("5:supprimer un collaborateur\n");
 		printf("6:Annuler Un dossier\n");	
 		printf("7:Cloturer un dossier\n");
@@ -38,7 +42,7 @@ void Affichage_du_menu()
 		{
 
 			case 1:
-				fonc1(mylist_Dossier,mylisteCollab);
+				fonc1(&mylist_Dossier,&mylisteCollab);
 					
 			break;
 
@@ -47,7 +51,11 @@ void Affichage_du_menu()
 			break;
 
 			case 3:
+				system("clear");
+
 				ajouterDossier(mylist_Dossier,mylisteCollab);
+				
+
 				
 			break;
 
@@ -86,21 +94,37 @@ void Affichage_du_menu()
 			break;
 			
 			case 11:
+				system("clear");
 				printf("l'entreprise a %d de collaborateurs\n \
 					le nombre maximum de dossier est de %d \n \
 					Une moyenne de %d dossier/Collaborateur\n",nbreCollaborateur(),nbreMAxdoss(mylisteCollab),nbreMoyendossparCollab());
 				
+				printf("Appuyer sur entrée pour quitter \n");
+				
+				scanf("%c",&c);
+				fflush(stdin);
+				system("clear");
 				
 			break;
 
 			case 12:
-				nomSauvegarder();
+				system("clear");
+				flag=1;
+				nomSauvegarder(&flag);
 
+				
 			break;
 			case 13:
 				
 				quit=0;
 
+			break;
+			case 14:
+				
+
+				fonction14(mylisteCollab);
+
+				
 			break;
 			
 			break;
@@ -112,18 +136,56 @@ void Affichage_du_menu()
 	
 
 }
-void fonc1(ListeDoss *mylistedoss,Liste *listcoll)
+void fonc1(ListeDoss **mylistedoss,Liste **listcoll)
 {
+	system("clear");
+    	nomSauvegarder(&flag);
+	system("clear");
 	
-    nomSauvegarder();
-    listcoll=chargerListe();
-    mylistedoss=chargerListeDossier(listcoll);
+    	int i=0;
+
+ 	printf("1: charger le Fichier de dossier et liste\n");	
+	printf("2: charger le Fichier de liste\n");
+	printf("3: pour quitter\n");
+
+    	scanf("%d",&i);
+    	fflush(stdin);
+
+	switch(i)
+	{
+		case 1:
+
+			free(*mylistedoss);
+			free(*listcoll);
+			*listcoll=chargerListe();
+    			*mylistedoss=chargerListeDossier(*listcoll);
 
 
+		break;
+
+		case 2:
+			free(*listcoll);
+			*listcoll=chargerListe();
+    			
+		break;
+
+		default:
+			system("clear");
+		break;
+
+	}
+	
+	printf("Appuyer sur entrée pour quitter \n");
+				char c;
+				scanf("%c",&c);
+				fflush(stdin);
+				system("clear");
 
 }
 void fonc2(ListeDoss* mylist)
-{
+{	
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du dossier recherché\n");
 	scanf("%s",chaine);
@@ -131,16 +193,31 @@ void fonc2(ListeDoss* mylist)
 
 	Dossier* tmp=rechercheDossierNom(mylist,chaine);
 	AfficherDossier(tmp);
+
+	printf("Appuyer sur entrée pour quitter \n");
+				char c;
+				scanf("%c",&c);
+				fflush(stdin);
+				system("clear");
 }
 void fonc5(Liste *mylist)
-{
+{	
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du collaborateur à supprimer\n");
 	scanf("%s",chaine);
-	fflush(stdin);ListeDoss* chargerListeDossier();
+	fflush(stdin);
+	Collaborateur* tmp=rechercheCollaborateurNom(mylist,chaine);
+	deleteElement(mylist,tmp);
+
+	
+
 }
 void fonc6(ListeDoss* mylist)
 {
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du Dossier à annuler\n");
 	scanf("%s",chaine);
@@ -148,30 +225,44 @@ void fonc6(ListeDoss* mylist)
 	Dossier* tmp=rechercheDossierNom(mylist,chaine);
 	tmp->etat_dossier=ANNULE;
 
+	
+
+
 
 }
 void fonc7(ListeDoss *mylist)
-{
+{	
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du Dossier à cloturer\n");
 	scanf("%s",chaine);
 	fflush(stdin);
 	Dossier* tmp= rechercheDossierNom(mylist,chaine);
 	cloturerDossier(tmp);
+
+	
 }
 void fonc8(ListeDoss* mylist,Liste*mine)
 {
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du Dossier à modifier\n");
 	scanf("%s",chaine);
 	fflush(stdin);
+	
 	Dossier* tmp=rechercheDossierNom(mylist,chaine);
 	modifierDossier(tmp,mine);
 	enregistrerListeDossier(mylist);
+
+	
 	
 }
 void fonc9(Liste* mylist)
 {
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du collaborateur à modifier\n");
 	scanf("%s",chaine);
@@ -179,14 +270,33 @@ void fonc9(Liste* mylist)
 	Collaborateur* tmp=rechercheCollaborateurNom(mylist,chaine);
 	modifierCollab(tmp);
 
+	
+
 
 }
 void fonc10(Liste* mylist)
-{	
+{
+	system("clear");
+
 	char chaine[128];
 	printf("Entrer le nom du collaborateur\n");
 	scanf("%s",chaine);
 	fflush(stdin);
 	Collaborateur *tmp=rechercheCollaborateurNom(mylist,chaine);
 	AfficherListeDossSuivi(tmp);
+
+	
+}
+void fonction14(Liste* mylist)
+{
+	system("clear");
+
+	char chaine[128];
+	printf("Entrer le nom du collaborateur\n");
+	scanf("%s",chaine);
+	fflush(stdin);
+	Collaborateur* tmp=rechercheCollaborateurNom(mylist,chaine);
+	tmp? afficherCollab(tmp) : printf("erreur");
+
+	
 }
